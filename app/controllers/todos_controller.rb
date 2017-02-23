@@ -4,7 +4,9 @@ class TodosController < ApplicationController
   # GET /todos
   # GET /todos.json
   def index
-    @todos = Todo.all
+    @user = current_user
+    # @todos = Todo.all
+    @todos = current_user.todos
   end
 
   # GET /todos/1
@@ -14,7 +16,10 @@ class TodosController < ApplicationController
 
   # GET /todos/new
   def new
+    @user = current_user
     @todo = Todo.new
+    @todo.user_id = current_user.id
+    @todo.save
   end
 
   # GET /todos/1/edit
@@ -24,7 +29,6 @@ class TodosController < ApplicationController
   # POST /todos
   # POST /todos.json
   def create
-    @user = current_user
     @todo = Todo.new(todo_params)
 
     respond_to do |format|
@@ -70,6 +74,6 @@ class TodosController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def todo_params
-      params.require(:todo).permit(:title, :desc)
+      params.require(:todo).permit(:title, :desc, :user_id)
     end
 end
