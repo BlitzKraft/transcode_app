@@ -5,13 +5,15 @@ class TodosController < ApplicationController
   # GET /todos.json
   def index
     @user = current_user
-    # @todos = Todo.all
     @todos = current_user.todos
   end
 
   # GET /todos/1
   # GET /todos/1.json
   def show
+	if current_user.id != Todo.find(params[:id]).user_id
+		redirect_to root_path
+	end
   end
 
   # GET /todos/new
